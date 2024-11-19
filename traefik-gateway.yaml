@@ -23,6 +23,7 @@ spec:
       protocol: HTTPS
       port: 443
       tls:
+        mode: Terminate
         certificateRefs:
           - kind: Secret
             name: mysecret
@@ -43,62 +44,3 @@ spec:
           - kind: Secret
             name: mysecret
 
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: http-app
-  namespace: default
-
-spec:
-  parentRefs:
-    - name: my-gateway
-
-  hostnames:
-    - foo.com
-
-  rules:
-    - matches:
-        - path:
-            type: Exact
-            value: /bar
-
-      backendRefs:
-        - name: whoami
-          port: 80
-          weight: 1
-
----
-apiVersion: gateway.networking.k8s.io/v1alpha2
-kind: TCPRoute
-metadata:
-  name: tcp-app
-  namespace: default
-
-spec:
-  parentRefs:
-    - name: my-gateway
-
-  rules:
-    - backendRefs:
-        - name: whoami
-          port: 80
-          weight: 1
-
----
-apiVersion: gateway.networking.k8s.io/v1alpha2
-kind: TLSRoute
-metadata:
-  name: tls-app
-  namespace: default
-
-spec:
-  parentRefs:
-    - name: my-gateway
-      sectionName: tls
-
-  rules:
-    - backendRefs:
-        - name: whoami
-          port: 80
-          weight: 1

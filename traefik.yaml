@@ -32,6 +32,7 @@ spec:
             - --entryPoints.tls.address=:9443
             - --entryPoints.https.address=:443
             - --providers.kubernetesgateway
+            - --providers.kubernetesCRD
             - --providers.kubernetesgateway.experimentalchannel=true
             - --log.level=DEBUG
             - --api.dashboard=true
