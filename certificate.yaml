@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: traefik-tls
+  namespace: traefik
+spec:
+  secretName: traefiklabs-tech-tls
+  issuerRef:
+    name: letsencrypt
+  dnsNames:
+  - echo.gateway-api.demo.traefiklabs.tech

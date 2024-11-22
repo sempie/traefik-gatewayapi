@@ -2,7 +2,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
 metadata:
-  name: my-gateway-class
+  name: traefik
 spec:
   controllerName: traefik.io/gateway-controller
 
@@ -10,23 +10,28 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: my-gateway
-  namespace: default
+  name: traefik-gateway
+  namespace: traefik
 spec:
-  gatewayClassName: my-gateway-class
+  gatewayClassName: traefik
   listeners: # Use GatewayClass defaults for listener definition.
-    - name: http
+    - name: web
       protocol: HTTP
-      port: 80
-
-    - name: https
+      port: 8000
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: websecure
       protocol: HTTPS
-      port: 443
+      port: 8443
+      allowedRoutes:
+        namespaces:
+          from: All
       tls:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: mysecret
+            name: traefiklabs-tech-tls
 
     - name: tcp
       protocol: TCP
@@ -42,5 +47,5 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: mysecret
+            name: traefiklabs-tech-tls
 

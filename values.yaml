@@ -1,0 +1,27 @@
+providers:
+ kubernetesCRD:
+   enabled: true
+ kubernetesGateway:
+   enabled: true
+   experimentalChannel: true
+
+api:
+ dashboard: true
+ insecure: true
+
+log:
+ level: DEBUG
+
+ports:
+ tcp:
+   port: 9000
+ tls:
+   port: 9443
+
+ingressClass:
+ enabled: true
+
+gateway:
+  listeners:
+    web:
+      namespacePolicy: "All"

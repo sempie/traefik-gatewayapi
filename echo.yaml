@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: https-echo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: https-echo
+  template:
+    metadata:
+      labels:
+        app: https-echo
+    spec:
+      containers:
+      - name: https-echo
+        image: mendhak/http-https-echo:latest
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: certs
+          mountPath: "/certs"
+          readOnly: true
+        env:
+        - name: SSL_CERT_PATH
+          value: "/certs/tls.crt"
+        - name: SSL_KEY_PATH
+          value: "/certs/tls.key"
+      volumes:
+      - name: certs
+        secret:
+          secretName: traefiklabs-tech-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: https-echo
+spec:
+  selector:
+    app: https-echo
+  ports:
+  - port: 8080
+    targetPort: 8080

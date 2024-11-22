@@ -7,10 +7,11 @@ metadata:
 
 spec:
   parentRefs:
-    - name: my-gateway
-      sectionName: https
+    - name: traefik-gateway
+      namespace: traefik
+      sectionName: websecure
   hostnames:
-    - example.com
+    - echo.gateway-api.demo.traefiklabs.tech
   rules:
     - matches:
         - path:
@@ -24,7 +25,7 @@ spec:
             name: passcert
       backendRefs:
         - name: https-echo
-          port: 8443
+          port: 8080
           weight: 1
 
 ---
@@ -36,7 +37,7 @@ metadata:
 
 spec:
   parentRefs:
-    - name: my-gateway
+    - name: traefik-gateway
 
   rules:
     - backendRefs:
@@ -53,7 +54,7 @@ metadata:
 
 spec:
   parentRefs:
-    - name: my-gateway
+    - name: traefik-gateway
       sectionName: tls
 
   rules:
